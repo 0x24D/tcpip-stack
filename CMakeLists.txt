@@ -1,6 +1,13 @@
-cmake_minimum_required(VERSION 3.14)
-project(tcpip_stack)
+cmake_minimum_required(VERSION 3.20)
 
-set(CMAKE_CXX_STANDARD 17)
+project(tcpip-stack)
 
-add_executable(tcpip_stack src/main.cpp)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+add_compile_options(-Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic)
+
+add_subdirectory(src)

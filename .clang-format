@@ -1,0 +1,15 @@
+AccessModifierOffset: -4
+AlignAfterOpenBracket: DontAlign
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: Empty
+AllowShortLoopsOnASingleLine: false
+BasedOnStyle: Google
+ColumnLimit: 100
+EmptyLineBeforeAccessModifier: Never
+FixNamespaceComments: false
+IncludeBlocks: Merge
+IndentWidth: 4
+NamespaceIndentation: All
+Standard: c++20
