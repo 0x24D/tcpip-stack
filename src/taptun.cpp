@@ -5,6 +5,7 @@
 #include <cstring>
 #include <iostream>
 #include <utility>
+#include "ethernet.h"
 #include "linux/if_tun.h"
 #include "net/if.h"
 
@@ -65,6 +66,8 @@ taptun::~taptun() {
 void taptun::listen() const {
     // TODO: Read more than one frame
     const auto frame = read();
+    auto eth = ethernet(frame);
+    std::cout << eth.to_string();
 }
 
 std::vector<uint8_t> taptun::read() const {
