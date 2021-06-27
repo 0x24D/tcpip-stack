@@ -40,14 +40,15 @@ void test_max_payload() {
     constexpr std::array<uint8_t, 2> ethertype{0x0C, 0x0D};
 
     constexpr auto payload_size = 1500;
-    constexpr auto inc = 256;
+    constexpr auto overflow_value = 256;
+    constexpr auto count = static_cast<int>(payload_size / overflow_value);
     std::vector<uint8_t> payload(payload_size);
-    for (auto i = 0; i < payload_size; i += inc) {
-        // Ensure std::iota doesn't overflow.
-        const auto count = i + inc;
-        const auto end_it = count > payload_size ? payload.end() : payload.begin() + count;
-        std::iota(payload.begin() + i, end_it, 0x00);
+    for (auto i = 0; i < count; ++i) {
+        std::iota(
+            payload.begin() + i * overflow_value, payload.begin() + (i + 1) * overflow_value, 0x00);
     }
+    std::iota(payload.begin() + count * overflow_value, payload.end(), 0x00);
+
     constexpr std::array<uint8_t, 4> crc{0xFC, 0xFD, 0xFE, 0xFF};
 
     std::vector<uint8_t> frame{};
