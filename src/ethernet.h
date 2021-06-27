@@ -10,6 +10,11 @@ class ethernet {
 public:
     explicit ethernet(const std::vector<uint8_t>& frame);
     [[nodiscard]] std::string to_string() const;
+    [[nodiscard]] std::array<uint8_t, 6> get_dest() const;
+    [[nodiscard]] std::array<uint8_t, 6> get_src() const;
+    [[nodiscard]] std::array<uint8_t, 2> get_ethertype() const;
+    [[nodiscard]] std::vector<uint8_t> get_payload() const;
+    [[nodiscard]] std::array<uint8_t, 4> get_crc() const;
 private:
     std::array<uint8_t, 6> m_dest{};
     std::array<uint8_t, 6> m_src{};

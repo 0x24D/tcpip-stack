@@ -11,3 +11,4 @@ file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 add_compile_options(-Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic)
 
 add_subdirectory(src)
+add_subdirectory(test)

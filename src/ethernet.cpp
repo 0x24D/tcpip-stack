@@ -45,3 +45,23 @@ std::string ethernet::to_string() const {
     ss << ")\n";
     return ss.str();
 }
+
+std::array<uint8_t, 6> ethernet::get_dest() const {
+    return m_dest;
+};
+
+std::array<uint8_t, 6> ethernet::get_src() const {
+    return m_src;
+};
+
+std::array<uint8_t, 2> ethernet::get_ethertype() const {
+    return m_ethertype;
+};
+
+std::vector<uint8_t> ethernet::get_payload() const {
+    return m_payload;
+};
+
+std::array<uint8_t, 4> ethernet::get_crc() const {
+    return m_crc;
+};
