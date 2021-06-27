@@ -186,3 +186,4 @@ tags
 # End of https://www.toptal.com/developers/gitignore/api/c++,clion,cmake,vim
 
 bin
+.idea/codeStyles
