@@ -19,6 +19,8 @@ taptun::taptun(std::string &name, const interface_type &type, std::string addr, 
         exit(1);
     }
 
+    fcntl(fd, F_SETFL, O_NONBLOCK);
+
     if (!name.empty()) {
         strncpy(ifr.ifr_name, name.c_str(), IFNAMSIZ);
     }
@@ -58,4 +60,25 @@ taptun::taptun(std::string &name, const interface_type &type, std::string addr, 
 
 taptun::~taptun() {
     close(m_fd);
+}
+
+void taptun::listen() const {
+    // TODO: Read more than one frame
+    const auto frame = read();
+}
+
+std::vector<uint8_t> taptun::read() const {
+    constexpr auto ethFrameSize = 1522;
+    std::array<uint8_t, ethFrameSize> a{};
+    ssize_t size;
+    do {
+        size = ::read(m_fd, &a, ethFrameSize);
+    } while (size <= 0);
+
+    std::vector<uint8_t> v{};
+    v.reserve(size);
+    for (auto i = 0; i < size; ++i) {
+        v.push_back(a[i]);
+    }
+    return v;
 }
