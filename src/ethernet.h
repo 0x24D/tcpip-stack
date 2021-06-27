@@ -14,7 +14,7 @@ private:
     std::array<uint8_t, 6> m_dest{};
     std::array<uint8_t, 6> m_src{};
     std::array<uint8_t, 2> m_ethertype{};
-    std::array<uint8_t, 1500> m_payload{};
+    std::vector<uint8_t> m_payload{};
     std::array<uint8_t, 4> m_crc{};
 };
 

@@ -14,9 +14,11 @@ ethernet::ethernet(const std::vector<uint8_t>& frame) {
     end_it = std::next(begin_it, 2);
     std::move(begin_it, end_it, m_ethertype.begin());
 
+    m_payload.reserve(1500);
     begin_it = end_it;
     end_it = frame.end() - 4;
-    std::move(begin_it, end_it, m_payload.begin());
+    std::move(begin_it, end_it, std::back_inserter(m_payload));
+    m_payload.resize(std::distance(begin_it, end_it));
 
     begin_it = end_it;
     end_it = frame.end();
