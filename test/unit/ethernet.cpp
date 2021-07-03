@@ -40,7 +40,7 @@ void test_max_payload() {
     constexpr std::array<uint8_t, 2> ethertype{0x0C, 0x0D};
 
     constexpr auto payload_size = 1500;
-    constexpr auto overflow_value = 256;
+    constexpr auto overflow_value = std::numeric_limits<uint8_t>::max() + 1;
     constexpr auto count = static_cast<int>(payload_size / overflow_value);
     std::vector<uint8_t> payload(payload_size);
     for (auto i = 0; i < count; ++i) {
