@@ -1,6 +1,6 @@
 #include <iostream>
 
-namespace test_helper {
+namespace TestHelper {
     unsigned int tests_ran = 0;
     unsigned int tests_failed = 0;
     static void equals(

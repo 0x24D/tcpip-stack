@@ -3,7 +3,7 @@
 
 int main() {
     auto if_name = std::string{"tap0"};
-    auto tap_if = taptun(if_name, taptun::interface_type::TAP, "10.0.0.5", "10.0.0.0/24");
+    auto tap_if = TapTun(if_name, TapTun::InterfaceType::TAP, "10.0.0.5", "10.0.0.0/24");
     std::cout << "Configured tap interface: " << if_name << '\n';
     tap_if.listen();
     return 0;

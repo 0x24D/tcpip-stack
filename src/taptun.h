@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 
-class taptun {
+class TapTun {
 public:
-    enum struct interface_type : bool { TAP = true, TUN = false };
-    taptun(std::string &name, const interface_type &, std::string addr, std::string route);
-    ~taptun();
+    enum struct InterfaceType : bool { TAP = true, TUN = false };
+    TapTun(std::string &name, const InterfaceType &, std::string addr, std::string route);
+    ~TapTun();
     void listen() const;
     [[nodiscard]] std::vector<uint8_t> read() const;
 private:

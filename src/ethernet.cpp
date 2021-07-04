@@ -1,7 +1,7 @@
 #include "ethernet.h"
 #include <sstream>
 
-ethernet::ethernet(const std::vector<uint8_t>& frame) {
+Ethernet::Ethernet(const std::vector<uint8_t>& frame) {
     auto begin_it = frame.begin();
     auto end_it = std::next(begin_it, 6);
     std::move(begin_it, end_it, m_dest.begin());
@@ -25,7 +25,7 @@ ethernet::ethernet(const std::vector<uint8_t>& frame) {
     std::move(begin_it, end_it, m_crc.begin());
 }
 
-std::string ethernet::to_string() const {
+std::string Ethernet::to_string() const {
     std::stringstream ss{};
     for (std::size_t i = 0; i < m_src.size(); ++i) {
         ss << std::hex << (m_src[i] >> 4) << (m_src[i] & 0xF);
@@ -46,22 +46,22 @@ std::string ethernet::to_string() const {
     return ss.str();
 }
 
-std::array<uint8_t, 6> ethernet::get_dest() const {
+std::array<uint8_t, 6> Ethernet::get_dest() const {
     return m_dest;
 };
 
-std::array<uint8_t, 6> ethernet::get_src() const {
+std::array<uint8_t, 6> Ethernet::get_src() const {
     return m_src;
 };
 
-std::array<uint8_t, 2> ethernet::get_ethertype() const {
+std::array<uint8_t, 2> Ethernet::get_ethertype() const {
     return m_ethertype;
 };
 
-std::vector<uint8_t> ethernet::get_payload() const {
+std::vector<uint8_t> Ethernet::get_payload() const {
     return m_payload;
 };
 
-std::array<uint8_t, 4> ethernet::get_crc() const {
+std::array<uint8_t, 4> Ethernet::get_crc() const {
     return m_crc;
 };

@@ -9,11 +9,11 @@
 #include "linux/if_tun.h"
 #include "net/if.h"
 
-taptun::taptun(std::string &name, const interface_type &type, std::string addr, std::string route)
+TapTun::TapTun(std::string &name, const InterfaceType &type, std::string addr, std::string route)
     : m_addr(std::move(addr)), m_route(std::move(route)) {
     struct ifreq ifr {};
 
-    const auto dev = (type == interface_type::TAP ? "/dev/net/tap" : "/dev/net/tun");
+    const auto dev = (type == InterfaceType::TAP ? "/dev/net/tap" : "/dev/net/tun");
     auto fd = open(dev, O_RDWR);
     if (fd < 0) {
         std::cerr << "Cannot open " << dev << ": " << errno << '\n';
@@ -26,7 +26,7 @@ taptun::taptun(std::string &name, const interface_type &type, std::string addr, 
         strncpy(ifr.ifr_name, name.c_str(), IFNAMSIZ);
     }
 
-    ifr.ifr_flags = (type == interface_type::TAP ? IFF_TAP : IFF_TUN) | IFF_NO_PI;
+    ifr.ifr_flags = (type == InterfaceType::TAP ? IFF_TAP : IFF_TUN) | IFF_NO_PI;
 
     auto err = ioctl(fd, TUNSETIFF, &ifr);
 
@@ -59,18 +59,18 @@ taptun::taptun(std::string &name, const interface_type &type, std::string addr, 
     }
 }
 
-taptun::~taptun() {
+TapTun::~TapTun() {
     close(m_fd);
 }
 
-void taptun::listen() const {
+void TapTun::listen() const {
     // TODO: Read more than one frame
     const auto frame = read();
-    auto eth = ethernet(frame);
+    auto eth = Ethernet(frame);
     std::cout << eth.to_string();
 }
 
-std::vector<uint8_t> taptun::read() const {
+std::vector<uint8_t> TapTun::read() const {
     constexpr auto ethFrameSize = 1522;
     std::array<uint8_t, ethFrameSize> a{};
     ssize_t size;

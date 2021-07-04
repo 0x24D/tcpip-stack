@@ -6,9 +6,9 @@
 #include <string>
 #include <vector>
 
-class ethernet {
+class Ethernet {
 public:
-    explicit ethernet(const std::vector<uint8_t>& frame);
+    explicit Ethernet(const std::vector<uint8_t>& frame);
     [[nodiscard]] std::string to_string() const;
     [[nodiscard]] std::array<uint8_t, 6> get_dest() const;
     [[nodiscard]] std::array<uint8_t, 6> get_src() const;

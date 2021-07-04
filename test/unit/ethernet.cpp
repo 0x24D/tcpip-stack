@@ -25,13 +25,13 @@ void test_min_payload() {
     std::ranges::copy(payload, std::back_inserter(frame));
     std::ranges::copy(crc, std::back_inserter(frame));
 
-    const ethernet eth{frame};
+    const Ethernet eth{frame};
 
-    test_helper::equals("Destination MAC", eth.get_dest(), dest);
-    test_helper::equals("Source MAC", eth.get_src(), src);
-    test_helper::equals("Ethertype", eth.get_ethertype(), ethertype);
-    test_helper::equals("Payload", eth.get_payload(), payload);
-    test_helper::equals("CRC", eth.get_crc(), crc);
+    TestHelper::equals("Destination MAC", eth.get_dest(), dest);
+    TestHelper::equals("Source MAC", eth.get_src(), src);
+    TestHelper::equals("Ethertype", eth.get_ethertype(), ethertype);
+    TestHelper::equals("Payload", eth.get_payload(), payload);
+    TestHelper::equals("CRC", eth.get_crc(), crc);
 }
 
 void test_max_payload() {
@@ -59,18 +59,18 @@ void test_max_payload() {
     std::ranges::copy(payload, std::back_inserter(frame));
     std::ranges::copy(crc, std::back_inserter(frame));
 
-    const ethernet eth{frame};
+    const Ethernet eth{frame};
 
-    test_helper::equals("Destination MAC", eth.get_dest(), dest);
-    test_helper::equals("Source MAC", eth.get_src(), src);
-    test_helper::equals("Ethertype", eth.get_ethertype(), ethertype);
-    test_helper::equals("Payload", eth.get_payload(), payload);
-    test_helper::equals("CRC", eth.get_crc(), crc);
+    TestHelper::equals("Destination MAC", eth.get_dest(), dest);
+    TestHelper::equals("Source MAC", eth.get_src(), src);
+    TestHelper::equals("Ethertype", eth.get_ethertype(), ethertype);
+    TestHelper::equals("Payload", eth.get_payload(), payload);
+    TestHelper::equals("CRC", eth.get_crc(), crc);
 }
 
 int main() {
     test_min_payload();
     test_max_payload();
 
-    return test_helper::result("unit/ethernet");
+    return TestHelper::result("unit/ethernet");
 }
