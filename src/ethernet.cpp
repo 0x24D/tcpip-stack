@@ -35,7 +35,7 @@ Ethernet::Ethernet(const std::vector<uint8_t>& frame) {
 #endif
 }
 
-std::string Ethernet::to_string() const {
+auto Ethernet::to_string() const -> std::string {
     std::stringstream ss{};
     for (std::size_t i = 0; i < m_src.size(); ++i) {
         ss << std::hex << (m_src[i] >> 4) << (m_src[i] & 0xF);
@@ -56,28 +56,28 @@ std::string Ethernet::to_string() const {
     return ss.str();
 }
 
-std::array<uint8_t, 6> Ethernet::get_dest() const {
+auto Ethernet::get_dest() const -> std::array<uint8_t, 6> {
     return m_dest;
-};
+}
 
-std::array<uint8_t, 6> Ethernet::get_src() const {
+auto Ethernet::get_src() const -> std::array<uint8_t, 6> {
     return m_src;
-};
+}
 
-std::array<uint8_t, 2> Ethernet::get_ethertype() const {
+auto Ethernet::get_ethertype() const -> std::array<uint8_t, 2> {
     return m_ethertype;
-};
+}
 
-std::vector<uint8_t> Ethernet::get_payload() const {
+auto Ethernet::get_payload() const -> std::vector<uint8_t> {
     return m_payload;
-};
+}
 
-std::array<uint8_t, 4> Ethernet::get_crc() const {
+auto Ethernet::get_crc() const -> std::array<uint8_t, 4> {
     return m_crc;
-};
+}
 
 #ifdef FCS_CAPTURED
-bool Ethernet::is_valid() const {
+auto Ethernet::is_valid() const -> bool {
     crc_cpp::crc32_bzip2 crc_gen;
 
     for (const auto i : m_dest)
@@ -94,7 +94,7 @@ bool Ethernet::is_valid() const {
 
     uint32_t our_crc = (m_crc[0] << 24) + (m_crc[1] << 16) + (m_crc[2] << 8) + (m_crc[3]);
     return our_crc == crc_gen.final();
-};
+}
 #endif
 
 void Ethernet::handle() const {

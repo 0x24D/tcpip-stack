@@ -63,14 +63,7 @@ TapTun::~TapTun() {
     close(m_fd);
 }
 
-void TapTun::listen() const {
-    // TODO: Read more than one frame
-    const auto frame = read();
-    auto eth = Ethernet(frame);
-    std::cout << eth.to_string();
-}
-
-std::vector<uint8_t> TapTun::read() const {
+auto TapTun::read() const {
     constexpr auto frame_size = 1522;
     std::array<uint8_t, frame_size> a{};
     ssize_t size;
@@ -84,4 +77,12 @@ std::vector<uint8_t> TapTun::read() const {
         v.push_back(a[i]);
     }
     return v;
+}
+
+void TapTun::listen() const {
+    // TODO: Read more than one frame
+    const auto frame = read();
+    auto eth = Ethernet(frame);
+    std::cout << eth.to_string();
+    eth.handle();
 }

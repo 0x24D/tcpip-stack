@@ -10,7 +10,7 @@ public:
     TapTun(std::string &name, const InterfaceType &, std::string addr, std::string route);
     ~TapTun();
     void listen() const;
-    [[nodiscard]] std::vector<uint8_t> read() const;
+    [[nodiscard]] auto read() const;
 private:
     int m_fd;
     std::string m_name;
