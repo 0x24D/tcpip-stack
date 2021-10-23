@@ -68,9 +68,52 @@ void test_max_payload() {
     TestHelper::equals("CRC", eth.get_crc(), crc);
 }
 
+void test_is_valid() {
+    constexpr std::array<uint8_t, 6> dest{0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
+    constexpr std::array<uint8_t, 6> src{0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B};
+    constexpr std::array<uint8_t, 2> ethertype{0x0C, 0x0D};
+
+    constexpr auto payload_size = 46;
+    std::vector<uint8_t> payload(payload_size);
+    std::iota(payload.begin(), payload.end(), 0x0E);
+
+    {
+        constexpr std::array<uint8_t, 4> crc{0xFC, 0xFD, 0xFE, 0xFF};
+
+        std::vector<uint8_t> frame{};
+        frame.reserve((dest.size() + src.size() + ethertype.size() + payload.size() + crc.size()));
+        std::ranges::copy(dest, std::back_inserter(frame));
+        std::ranges::copy(src, std::back_inserter(frame));
+        std::ranges::copy(ethertype, std::back_inserter(frame));
+        std::ranges::copy(payload, std::back_inserter(frame));
+        std::ranges::copy(crc, std::back_inserter(frame));
+
+        const Ethernet eth{frame};
+
+        TestHelper::equals("Checksum is invalid", eth.is_valid(), false);
+    }
+
+    {
+        constexpr std::array<uint8_t, 4> crc{0x53, 0x94, 0x19, 0x27};
+
+        std::vector<uint8_t> frame{};
+        frame.reserve((dest.size() + src.size() + ethertype.size() + payload.size() + crc.size()));
+        std::ranges::copy(dest, std::back_inserter(frame));
+        std::ranges::copy(src, std::back_inserter(frame));
+        std::ranges::copy(ethertype, std::back_inserter(frame));
+        std::ranges::copy(payload, std::back_inserter(frame));
+        std::ranges::copy(crc, std::back_inserter(frame));
+
+        const Ethernet eth{frame};
+
+        TestHelper::equals("Checksum is valid", eth.is_valid(), true);
+    }
+}
+
 int main() {
     test_min_payload();
     test_max_payload();
+    test_is_valid();
 
     return TestHelper::result("unit/ethernet");
 }

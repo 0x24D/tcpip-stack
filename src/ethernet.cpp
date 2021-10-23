@@ -1,5 +1,6 @@
 #include "ethernet.h"
 #include <sstream>
+#include "crc_cpp.h"
 
 Ethernet::Ethernet(const std::vector<uint8_t>& frame) {
     auto begin_it = frame.begin();
@@ -64,4 +65,23 @@ std::vector<uint8_t> Ethernet::get_payload() const {
 
 std::array<uint8_t, 4> Ethernet::get_crc() const {
     return m_crc;
+};
+
+bool Ethernet::is_valid() const {
+    crc_cpp::crc32_bzip2 crc_gen;
+
+    for (const auto i : m_dest)
+        crc_gen.update(i);
+
+    for (const auto i : m_src)
+        crc_gen.update(i);
+
+    for (const auto i : m_ethertype)
+        crc_gen.update(i);
+
+    for (const auto i : m_payload)
+        crc_gen.update(i);
+
+    uint32_t our_crc = (m_crc[0] << 24) + (m_crc[1] << 16) + (m_crc[2] << 8) + (m_crc[3]);
+    return our_crc == crc_gen.final();
 };

@@ -68,6 +68,8 @@ void TapTun::listen() const {
     const auto frame = read();
     auto eth = Ethernet(frame);
     std::cout << eth.to_string();
+
+    std::cout << eth.is_valid() << '\n';
 }
 
 std::vector<uint8_t> TapTun::read() const {

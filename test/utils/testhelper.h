@@ -18,6 +18,15 @@ namespace TestHelper {
         }
         ++tests_ran;
     }
+    // Overload for booleans
+    static void equals(std::string_view label, const bool response, const bool expected_response) {
+        if (response != expected_response) {
+            std::cerr << "Test case '" << label << "' failed\n"
+                      << response << " == " << expected_response << '\n';
+            ++tests_failed;
+        }
+        ++tests_ran;
+    }
     static void starts_with(
         std::string_view label, const auto& response, const auto& expected_start) {
         if (!response.starts_with(expected_start)) {

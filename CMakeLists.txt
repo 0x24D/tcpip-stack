@@ -8,6 +8,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
+include_directories(include)
+
 add_compile_options(-Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic)
 
 add_subdirectory(src)
