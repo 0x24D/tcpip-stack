@@ -1,6 +1,8 @@
 #include "ethernet.h"
 #include <sstream>
+#ifdef FCS_CAPTURED
 #include "crc_cpp.h"
+#endif
 
 Ethernet::Ethernet(const std::vector<uint8_t>& frame) {
     auto begin_it = frame.begin();
@@ -17,13 +19,19 @@ Ethernet::Ethernet(const std::vector<uint8_t>& frame) {
 
     m_payload.reserve(1500);
     begin_it = end_it;
+#ifdef FCS_CAPTURED
     end_it = frame.end() - 4;
+#else
+    end_it = frame.end();
+#endif
     std::move(begin_it, end_it, std::back_inserter(m_payload));
     m_payload.resize(std::distance(begin_it, end_it));
 
+#ifdef FCS_CAPTURED
     begin_it = end_it;
     end_it = frame.end();
     std::move(begin_it, end_it, m_crc.begin());
+#endif
 }
 
 std::string Ethernet::to_string() const {
@@ -67,6 +75,7 @@ std::array<uint8_t, 4> Ethernet::get_crc() const {
     return m_crc;
 };
 
+#ifdef FCS_CAPTURED
 bool Ethernet::is_valid() const {
     crc_cpp::crc32_bzip2 crc_gen;
 
@@ -85,3 +94,4 @@ bool Ethernet::is_valid() const {
     uint32_t our_crc = (m_crc[0] << 24) + (m_crc[1] << 16) + (m_crc[2] << 8) + (m_crc[3]);
     return our_crc == crc_gen.final();
 };
+#endif

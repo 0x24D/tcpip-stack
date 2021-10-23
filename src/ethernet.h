@@ -15,7 +15,9 @@ public:
     [[nodiscard]] std::array<uint8_t, 2> get_ethertype() const;
     [[nodiscard]] std::vector<uint8_t> get_payload() const;
     [[nodiscard]] std::array<uint8_t, 4> get_crc() const;
+#ifdef FCS_CAPTURED
     [[nodiscard]] bool is_valid() const;
+#endif
 private:
     std::array<uint8_t, 6> m_dest{};
     std::array<uint8_t, 6> m_src{};
