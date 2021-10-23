@@ -73,11 +73,11 @@ void TapTun::listen() const {
 }
 
 std::vector<uint8_t> TapTun::read() const {
-    constexpr auto ethFrameSize = 1522;
-    std::array<uint8_t, ethFrameSize> a{};
+    constexpr auto frame_size = 1522;
+    std::array<uint8_t, frame_size> a{};
     ssize_t size;
     do {
-        size = ::read(m_fd, &a, ethFrameSize);
+        size = ::read(m_fd, &a, frame_size);
     } while (size <= 0);
 
     std::vector<uint8_t> v{};
