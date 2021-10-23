@@ -18,8 +18,20 @@ namespace TestHelper {
         }
         ++tests_ran;
     }
+
     // Overload for booleans
     static void equals(std::string_view label, const bool response, const bool expected_response) {
+        if (response != expected_response) {
+            std::cerr << "Test case '" << label << "' failed\n"
+                      << response << " == " << expected_response << '\n';
+            ++tests_failed;
+        }
+        ++tests_ran;
+    }
+
+    // Overload for uint8_t
+    static void equals(
+        std::string_view label, const uint8_t response, const uint8_t expected_response) {
         if (response != expected_response) {
             std::cerr << "Test case '" << label << "' failed\n"
                       << response << " == " << expected_response << '\n';
@@ -42,6 +54,7 @@ namespace TestHelper {
         }
         ++tests_ran;
     }
+
     static auto result(std::string_view label) {
         if (tests_failed == 0) {
             std::cout << label << ": all test cases passed\n";

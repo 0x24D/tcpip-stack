@@ -8,6 +8,7 @@
 
 class Ethernet {
 public:
+    enum struct EtherType : uint16_t { ARP = 0x0806 };
     explicit Ethernet(const std::vector<uint8_t>& frame);
     [[nodiscard]] std::string to_string() const;
     [[nodiscard]] std::array<uint8_t, 6> get_dest() const;
@@ -18,6 +19,7 @@ public:
 #ifdef FCS_CAPTURED
     [[nodiscard]] bool is_valid() const;
 #endif
+    void handle() const;
 private:
     std::array<uint8_t, 6> m_dest{};
     std::array<uint8_t, 6> m_src{};

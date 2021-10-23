@@ -1,5 +1,6 @@
 #include "ethernet.h"
 #include <sstream>
+#include "arp.h"
 #ifdef FCS_CAPTURED
 #include "crc_cpp.h"
 #endif
@@ -95,3 +96,11 @@ bool Ethernet::is_valid() const {
     return our_crc == crc_gen.final();
 };
 #endif
+
+void Ethernet::handle() const {
+    const auto type = static_cast<EtherType>((m_ethertype[0] << 8) + (m_ethertype[1]));
+    if (type == EtherType::ARP) {
+        auto arp = ARP(m_payload);
+        arp.handle();
+    }
+}
