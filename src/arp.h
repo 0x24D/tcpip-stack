@@ -3,31 +3,35 @@
 
 #include <array>
 #include <cstdint>
+#include <string_view>
+#include <tuple>
 #include <vector>
 
 class ARP {
 public:
-    explicit ARP(const std::vector<uint8_t>& packet);
-    [[nodiscard]] auto get_hrd() const -> std::array<uint8_t, 2>;
-    [[nodiscard]] auto get_pro() const -> std::array<uint8_t, 2>;
-    [[nodiscard]] auto get_hln() const -> uint8_t;
-    [[nodiscard]] auto get_pln() const -> uint8_t;
-    [[nodiscard]] auto get_op() const -> std::array<uint8_t, 2>;
-    [[nodiscard]] auto get_sha() const -> std::vector<uint8_t>;
-    [[nodiscard]] auto get_spa() const -> std::vector<uint8_t>;
-    [[nodiscard]] auto get_tha() const -> std::vector<uint8_t>;
-    [[nodiscard]] auto get_tpa() const -> std::vector<uint8_t>;
-    void handle() const;
+    enum struct HardwareType : uint16_t { ETHERNET = 0x0001 };
+    enum struct ProtocolType : uint16_t { IPV4 = 0x0800 };
+    enum struct OpCode : uint16_t { REQUEST = 0x0001, REPLY = 0x0002 };
+    struct Header {
+        std::array<uint8_t, 2> hrd{};
+        std::array<uint8_t, 2> pro{};
+        uint8_t hln;
+        uint8_t pln;
+        std::array<uint8_t, 2> op{};
+        std::vector<uint8_t> sha{};
+        std::vector<uint8_t> spa{};
+        std::vector<uint8_t> tha{};
+        std::vector<uint8_t> tpa{};
+    };
+    struct TranslationTableRow {
+        std::array<uint8_t, 2> protocol_type;
+        std::vector<uint8_t> sender_protocol_address;
+        std::vector<uint8_t> sender_hardware_address;
+    };
+    [[nodiscard]] static auto parse(const std::vector<uint8_t>& packet) -> Header;
+    [[nodiscard]] auto handle(std::string_view if_name, Header&& header) -> std::vector<uint8_t>;
 private:
-    std::array<uint8_t, 2> m_hrd{};
-    std::array<uint8_t, 2> m_pro{};
-    uint8_t m_hln{};
-    uint8_t m_pln{};
-    std::array<uint8_t, 2> m_op{};
-    std::vector<uint8_t> m_sha{};
-    std::vector<uint8_t> m_spa{};
-    std::vector<uint8_t> m_tha{};
-    std::vector<uint8_t> m_tpa{};
+    std::vector<TranslationTableRow> m_translation_table{};
 };
 
 #endif

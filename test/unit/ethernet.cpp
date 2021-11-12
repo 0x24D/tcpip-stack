@@ -25,13 +25,13 @@ void test_min_payload() {
     std::ranges::copy(payload, std::back_inserter(frame));
     std::ranges::copy(crc, std::back_inserter(frame));
 
-    const Ethernet eth{frame};
+    const auto eth = Ethernet::parse(frame);
 
-    TestHelper::equals("Destination MAC", eth.get_dest(), dest);
-    TestHelper::equals("Source MAC", eth.get_src(), src);
-    TestHelper::equals("Ethertype", eth.get_ethertype(), ethertype);
-    TestHelper::equals("Payload", eth.get_payload(), payload);
-    TestHelper::equals("CRC", eth.get_crc(), crc);
+    TestHelper::equals("Destination MAC", eth.dest, dest);
+    TestHelper::equals("Source MAC", eth.src, src);
+    TestHelper::equals("Ethertype", eth.ethertype, ethertype);
+    TestHelper::equals("Payload", eth.payload, payload);
+    TestHelper::equals("CRC", eth.crc, crc);
 }
 
 void test_max_payload() {
@@ -59,13 +59,13 @@ void test_max_payload() {
     std::ranges::copy(payload, std::back_inserter(frame));
     std::ranges::copy(crc, std::back_inserter(frame));
 
-    const Ethernet eth{frame};
+    const auto eth = Ethernet::parse(frame);
 
-    TestHelper::equals("Destination MAC", eth.get_dest(), dest);
-    TestHelper::equals("Source MAC", eth.get_src(), src);
-    TestHelper::equals("Ethertype", eth.get_ethertype(), ethertype);
-    TestHelper::equals("Payload", eth.get_payload(), payload);
-    TestHelper::equals("CRC", eth.get_crc(), crc);
+    TestHelper::equals("Destination MAC", eth.dest, dest);
+    TestHelper::equals("Source MAC", eth.src, src);
+    TestHelper::equals("Ethertype", eth.ethertype, ethertype);
+    TestHelper::equals("Payload", eth.payload, payload);
+    TestHelper::equals("CRC", eth.crc, crc);
 }
 
 void test_is_valid() {
@@ -88,9 +88,9 @@ void test_is_valid() {
         std::ranges::copy(payload, std::back_inserter(frame));
         std::ranges::copy(crc, std::back_inserter(frame));
 
-        const Ethernet eth{frame};
+        const auto hdr = Ethernet::parse(frame);
 
-        TestHelper::equals("Checksum is invalid", eth.is_valid(), false);
+        TestHelper::equals("Checksum is invalid", Ethernet::is_valid(hdr), false);
     }
 
     {
@@ -104,9 +104,9 @@ void test_is_valid() {
         std::ranges::copy(payload, std::back_inserter(frame));
         std::ranges::copy(crc, std::back_inserter(frame));
 
-        const Ethernet eth{frame};
+        const auto hdr = Ethernet::parse(frame);
 
-        TestHelper::equals("Checksum is valid", eth.is_valid(), true);
+        TestHelper::equals("Checksum is valid", Ethernet::is_valid(hdr), true);
     }
 }
 

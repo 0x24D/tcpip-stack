@@ -5,27 +5,25 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include "arp.h"
 
 class Ethernet {
 public:
     enum struct EtherType : uint16_t { ARP = 0x0806 };
-    explicit Ethernet(const std::vector<uint8_t>& frame);
-    [[nodiscard]] auto to_string() const -> std::string;
-    [[nodiscard]] auto get_dest() const -> std::array<uint8_t, 6>;
-    [[nodiscard]] auto get_src() const -> std::array<uint8_t, 6>;
-    [[nodiscard]] auto get_ethertype() const -> std::array<uint8_t, 2>;
-    [[nodiscard]] auto get_payload() const -> std::vector<uint8_t>;
-    [[nodiscard]] auto get_crc() const -> std::array<uint8_t, 4>;
+    struct Header {
+        std::array<uint8_t, 6> dest{};
+        std::array<uint8_t, 6> src{};
+        std::array<uint8_t, 2> ethertype{};
+        std::vector<uint8_t> payload{};
+        std::array<uint8_t, 4> crc{};
+    };
+    [[nodiscard]] static auto parse(const std::vector<uint8_t>& frame) -> Header;
+    [[nodiscard]] auto handle(std::string_view if_name, Header header) -> std::vector<uint8_t>;
 #ifdef FCS_CAPTURED
-    [[nodiscard]] auto is_valid() const -> bool;
+    [[nodiscard]] static auto is_valid(const Header& header) -> bool;
 #endif
-    void handle() const;
 private:
-    std::array<uint8_t, 6> m_dest{};
-    std::array<uint8_t, 6> m_src{};
-    std::array<uint8_t, 2> m_ethertype{};
-    std::vector<uint8_t> m_payload{};
-    std::array<uint8_t, 4> m_crc{};
+    ARP m_arp{};
 };
 
 #endif

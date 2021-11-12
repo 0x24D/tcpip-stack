@@ -29,17 +29,17 @@ void test_no_hln() {
     std::ranges::copy(tha, std::back_inserter(packet));
     std::ranges::copy(tpa, std::back_inserter(packet));
 
-    const ARP arp{packet};
+    const auto arp = ARP::parse(packet);
 
-    TestHelper::equals("Hardware Type", arp.get_hrd(), hrd);
-    TestHelper::equals("Protocol Type", arp.get_pro(), pro);
-    TestHelper::equals("Hardware Address Length", arp.get_hln(), hln);
-    TestHelper::equals("Protocol Address Length", arp.get_pln(), pln);
-    TestHelper::equals("OpCode", arp.get_op(), op);
-    TestHelper::equals("Sender Hardware Address", arp.get_sha(), sha);
-    TestHelper::equals("Sender Protocol Address", arp.get_spa(), spa);
-    TestHelper::equals("Target Hardware Address", arp.get_tha(), tha);
-    TestHelper::equals("Target Protocol Address", arp.get_tpa(), tpa);
+    TestHelper::equals("Hardware Type", arp.hrd, hrd);
+    TestHelper::equals("Protocol Type", arp.pro, pro);
+    TestHelper::equals("Hardware Address Length", arp.hln, hln);
+    TestHelper::equals("Protocol Address Length", arp.pln, pln);
+    TestHelper::equals("OpCode", arp.op, op);
+    TestHelper::equals("Sender Hardware Address", arp.sha, sha);
+    TestHelper::equals("Sender Protocol Address", arp.spa, spa);
+    TestHelper::equals("Target Hardware Address", arp.tha, tha);
+    TestHelper::equals("Target Protocol Address", arp.tpa, tpa);
 }
 
 void test_no_pln() {
@@ -66,17 +66,17 @@ void test_no_pln() {
     std::ranges::copy(tha, std::back_inserter(packet));
     std::ranges::copy(tpa, std::back_inserter(packet));
 
-    const ARP arp{packet};
+    const auto arp = ARP::parse(packet);
 
-    TestHelper::equals("Hardware Type", arp.get_hrd(), hrd);
-    TestHelper::equals("Protocol Type", arp.get_pro(), pro);
-    TestHelper::equals("Hardware Address Length", arp.get_hln(), hln);
-    TestHelper::equals("Protocol Address Length", arp.get_pln(), pln);
-    TestHelper::equals("OpCode", arp.get_op(), op);
-    TestHelper::equals("Sender Hardware Address", arp.get_sha(), sha);
-    TestHelper::equals("Sender Protocol Address", arp.get_spa(), spa);
-    TestHelper::equals("Target Hardware Address", arp.get_tha(), tha);
-    TestHelper::equals("Target Protocol Address", arp.get_tpa(), tpa);
+    TestHelper::equals("Hardware Type", arp.hrd, hrd);
+    TestHelper::equals("Protocol Type", arp.pro, pro);
+    TestHelper::equals("Hardware Address Length", arp.hln, hln);
+    TestHelper::equals("Protocol Address Length", arp.pln, pln);
+    TestHelper::equals("OpCode", arp.op, op);
+    TestHelper::equals("Sender Hardware Address", arp.sha, sha);
+    TestHelper::equals("Sender Protocol Address", arp.spa, spa);
+    TestHelper::equals("Target Hardware Address", arp.tha, tha);
+    TestHelper::equals("Target Protocol Address", arp.tpa, tpa);
 }
 
 void test_hln_and_pln() {
@@ -103,17 +103,17 @@ void test_hln_and_pln() {
     std::ranges::copy(tha, std::back_inserter(packet));
     std::ranges::copy(tpa, std::back_inserter(packet));
 
-    const ARP arp{packet};
+    const auto arp = ARP::parse(packet);
 
-    TestHelper::equals("Hardware Type", arp.get_hrd(), hrd);
-    TestHelper::equals("Protocol Type", arp.get_pro(), pro);
-    TestHelper::equals("Hardware Address Length", arp.get_hln(), hln);
-    TestHelper::equals("Protocol Address Length", arp.get_pln(), pln);
-    TestHelper::equals("OpCode", arp.get_op(), op);
-    TestHelper::equals("Sender Hardware Address", arp.get_sha(), sha);
-    TestHelper::equals("Sender Protocol Address", arp.get_spa(), spa);
-    TestHelper::equals("Target Hardware Address", arp.get_tha(), tha);
-    TestHelper::equals("Target Protocol Address", arp.get_tpa(), tpa);
+    TestHelper::equals("Hardware Type", arp.hrd, hrd);
+    TestHelper::equals("Protocol Type", arp.pro, pro);
+    TestHelper::equals("Hardware Address Length", arp.hln, hln);
+    TestHelper::equals("Protocol Address Length", arp.pln, pln);
+    TestHelper::equals("OpCode", arp.op, op);
+    TestHelper::equals("Sender Hardware Address", arp.sha, sha);
+    TestHelper::equals("Sender Protocol Address", arp.spa, spa);
+    TestHelper::equals("Target Hardware Address", arp.tha, tha);
+    TestHelper::equals("Target Protocol Address", arp.tpa, tpa);
 }
 
 int main() {

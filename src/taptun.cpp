@@ -5,7 +5,6 @@
 #include <cstring>
 #include <iostream>
 #include <utility>
-#include "ethernet.h"
 #include "linux/if_tun.h"
 #include "net/if.h"
 
@@ -79,10 +78,27 @@ auto TapTun::read() const {
     return v;
 }
 
-void TapTun::listen() const {
+void TapTun::listen() {
     // TODO: Read more than one frame
     const auto frame = read();
-    auto eth = Ethernet(frame);
-    std::cout << eth.to_string();
-    eth.handle();
+    const auto eth_header = Ethernet::parse(frame);
+#ifdef FCS_CAPTURED
+    if (Ethernet::is_valid(eth_header)) {
+#endif
+        const auto eth_reply = m_ethernet.handle(m_name, eth_header);
+        if (!eth_reply.empty())
+            write(eth_reply);
+#ifdef FCS_CAPTURED
+    }
+#endif
+}
+
+void TapTun::write(const std::vector<uint8_t> &frame) const {
+    constexpr auto max_frame_size = 1522;
+    const auto actual_frame_size = frame.size();
+    std::array<uint8_t, max_frame_size> a{};
+    for (auto i = 0; i < actual_frame_size; ++i) {
+        a[i] = frame[i];
+    }
+    ::write(m_fd, &a, actual_frame_size);
 }
